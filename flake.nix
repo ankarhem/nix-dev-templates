@@ -44,13 +44,12 @@
           };
         };
       flake.templates =
-        { lib, ... }:
         let
-          entries = builtins.readDir ./.;
+          entries = builtins.readDir ./templates;
           templates = builtins.mapAttrs (name: _: {
-            path = ./${name};
+            path = ./templates/${name};
             description = "${name} development environment";
-          }) (lib.filterAttrs (name: kind: kind == "directory") entries);
+          }) entries;
         in
         templates;
     };
