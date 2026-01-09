@@ -26,7 +26,6 @@
       perSystem =
         {
           config,
-          lib,
           pkgs,
           system,
           ...
@@ -44,5 +43,15 @@
             packages = config.pre-commit.settings.enabledPackages;
           };
         };
+      flake.templates =
+        { lib, ... }:
+        let
+          entries = builtins.readDir ./.;
+          templates = builtins.mapAttrs (name: value: {
+            path = ./${name};
+            description = "${name} development environment";
+          }) lib.filterAttrs (name: value: value == "directory") entries;
+        in
+        templates;
     };
 }
