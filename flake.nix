@@ -45,11 +45,15 @@
         };
       flake.templates =
         let
-          entries = builtins.readDir ./templates;
+          inherit (inputs.nixpkgs) lib;
+          entries = builtins.readDir ./.;
+          folders = lib.filterAttrs (
+            name: kind: kind == "directory" && !lib.hasPrefix "." name && !builtins.elem name [ "result" ]
+          ) entries;
           templates = builtins.mapAttrs (name: _: {
-            path = ./templates/${name};
+            path = ./. + name;
             description = "${name} development environment";
-          }) entries;
+          }) folders;
         in
         templates;
     };
