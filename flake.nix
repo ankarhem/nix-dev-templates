@@ -47,10 +47,10 @@
         { lib, ... }:
         let
           entries = builtins.readDir ./.;
-          templates = builtins.mapAttrs (name: value: {
+          templates = builtins.mapAttrs (name: _: {
             path = ./${name};
             description = "${name} development environment";
-          }) lib.filterAttrs (name: value: value == "directory") entries;
+          }) (lib.filterAttrs (name: kind: kind == "directory") entries);
         in
         templates;
     };
