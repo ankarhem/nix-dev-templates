@@ -51,7 +51,7 @@
             name: kind: kind == "directory" && !lib.hasPrefix "." name && !builtins.elem name [ "result" ]
           ) entries;
           templates = builtins.mapAttrs (name: _: {
-            path = ./. + name;
+            path = ./${name};
             description = "${name} development environment";
           }) folders;
         in
